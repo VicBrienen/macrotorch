@@ -16,7 +16,7 @@ class RMSNorm(nn.Module):
 
     def forward(self, x): # (..., dim)
 
-        # root mean square operation on the last dimension on the input tensor
+        # root mean square operation on individual feature vector
         square = x ** 2 # (..., dim)
         mean = torch.mean(square, dim=-1, keepdim=True) # (..., 1)
         rms = torch.sqrt(mean + self.eps) # (..., 1)

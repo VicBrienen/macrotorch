@@ -9,7 +9,7 @@ from architecture.linear import Linear
 
 
 class MultiheadAttention(nn.Module):
-    def __init__(self, embed_dim, heads):
+    def __init__(self, embed_dim, heads, causal=False):
         super().__init__()
 
         # convention of dividing the embed_dim by number of heads to obtain head_dim for computational purposes
@@ -21,6 +21,8 @@ class MultiheadAttention(nn.Module):
         self.v_proj = Linear(embed_dim, embed_dim)
 
         self.out_proj = Linear(embed_dim, embed_dim)
+
+        self.causal = causal
 
     def forward(self, x): # (batch, token, embed_dim)
         batch, token, embed_dim = x.shape # extract input shape
@@ -46,6 +48,11 @@ class MultiheadAttention(nn.Module):
         # variance of dot product is head_dim. to make variance 1 we divide by the standard deviation head_dim ** 0.5
         # so that input to softmax does not result in near binary output causing vanishing gradients
         attention_scores = attention_scores / self.head_dim ** 0.5 # (batch, heads, token, token)
+
+        if self.causal: # add a causal mask to prevent infromation leakage for autoregressive training
+            mask = torch.triu(torch.ones(token, token, device=x.device, dtype=torch.bool), diagonal=1) # (token, token)
+            attention_scores = attention_scores.masked_fill(mask, float("-inf")) # (batch, heads, token, token)
+
 
         # apply softmax to turn scores into probabilities that sum to 1 and turn attention into weighted average
         attention_weights = torch.softmax(attention_scores, dim=-1) # (batch, heads, token, token)

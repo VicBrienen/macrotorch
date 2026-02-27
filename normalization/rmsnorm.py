@@ -1,5 +1,6 @@
 """
-https://arxiv.org/pdf/1910.07467 - Root Mean Square Layer Normalization
+Root Mean Square Layer Normalization
+https://arxiv.org/pdf/1910.07467
 """
 
 import torch

@@ -1,24 +1,29 @@
+"""
+Improving Language Understanding by Generative Pre-Training
+https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf
+"""
+
 import torch
 from torch import nn
 from multiheadattention import MultiheadAttention
-from normalization.rmsnorm import RMSNorm
+from normalization.layernorm import LayerNorm
 from mlp import MLP
+from function import gelu
 
-class Block(nn.Module):
+class DecoderBlock(nn.Module):
     def __init__(self, embed_dim, heads, mlp_ratio):
         super().__init__()
 
-        self.attention = MultiheadAttention(embed_dim, heads)
-        self.mlp = MLP(embed_dim, mlp_ratio)
+        self.attention = MultiheadAttention(embed_dim, heads, causal=True) # causal self attention
+        self.mlp = MLP(embed_dim, bias=True, activation=gelu, mlp_ratio=mlp_ratio) # regular GELU MLP
 
-        self.norm1 = RMSNorm(embed_dim)
-        self.norm2 = RMSNorm(embed_dim)
+        self.norm1 = LayerNorm(embed_dim)
+        self.norm2 = LayerNorm(embed_dim)
 
     def forward(self, x): # (batch, token, embed_dim)
 
-        # pre layer normalization (prenorm) outside the residual stream for training stability
-        x = x + self.attention(self.norm1(x))
-        x = x + self.mlp(self.norm2(x))
+        # post norm over residual stream in GPT-1 style (not as stable as prenorm)
+        x = self.norm1(x + self.attention(x))
+        x = self.norm2(x + self.mlp(x))
 
         return x # (batch, token, embed_dim)
-    

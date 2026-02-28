@@ -1,4 +1,4 @@
 # macrotorch
 <p align="center">
-  <img src="transformer.png" alt="transformer" style="width:100%; max-width:none;"/>
+  <img src="timeline.png" alt="timeline" style="width:100%; max-width:none;"/>
 </p>

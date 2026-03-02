@@ -5,10 +5,10 @@ https://cdn.openai.com/research-covers/language-unsupervised/language_understand
 
 import torch
 from torch import nn
-from multiheadattention import MultiheadAttention
-from normalization.layernorm import LayerNorm
+from _2017_Transformer.multiheadattention import MultiheadAttention
+from _2016_LayerNorm.layernorm import LayerNorm
 from mlp import MLP
-from function import gelu
+from _2016_LayerNorm.glu import gelu
 
 class DecoderBlock(nn.Module):
     def __init__(self, embed_dim, heads, mlp_ratio):

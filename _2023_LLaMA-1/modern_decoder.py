@@ -5,10 +5,11 @@ https://arxiv.org/pdf/2302.13971
 
 import torch
 from torch import nn
-from multiheadattention import MultiheadAttention
-from normalization.rmsnorm import RMSNorm
-from mlp import MLP
-from function import silu
+from _2016_LayerNorm.glu import silu
+from _2017_Transformer.multiheadattention import MultiheadAttention
+from _2019_RMSNorm.rmsnorm import RMSNorm
+from _2020_GPT.mlp import MLP
+
 
 class DecoderBlock(nn.Module):
     def __init__(self, embed_dim, heads, mlp_ratio):

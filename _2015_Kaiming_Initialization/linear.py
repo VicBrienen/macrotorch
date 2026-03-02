@@ -1,3 +1,8 @@
+"""
+Kaiming initialization
+https://arxiv.org/pdf/1502.01852
+"""
+
 import torch
 from torch import nn
 
@@ -5,9 +10,7 @@ from torch import nn
 class Linear(nn.Module):
     def __init__(self, in_features, out_features, bias=False):
         super().__init__()
-
-        # Kaiming initialization
-        # https://arxiv.org/pdf/1502.01852
+        
         self.weights = nn.Parameter(torch.randn((in_features, out_features)) * (2 / in_features) ** 0.5)
 
         # optional bias
@@ -22,4 +25,4 @@ class Linear(nn.Module):
         if self.bias is not None:
             x = x + self.bias
         
-        return x # (batch, in_features)
+        return x # (batch, out_features)

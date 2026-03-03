@@ -5,7 +5,28 @@ https://arxiv.org/pdf/1706.03762
 
 import torch
 from torch import nn
+from _2011.relu import relu
 from _2015.kaiming import Linear
+from _2016.layernorm import LayerNorm
+
+
+class TransformerBlock(nn.Module):
+    def __init__(self, embed_dim, heads, mlp_ratio):
+        super().__init__()
+
+        self.attention = MultiheadAttention(embed_dim, heads, causal=True)
+        self.mlp = MLP(embed_dim, mlp_ratio=mlp_ratio)
+
+        self.norm1 = LayerNorm(embed_dim)
+        self.norm2 = LayerNorm(embed_dim)
+
+    def forward(self, x): # (batch, token, embed_dim)
+
+        # post norm over residual stream (doesn't scale as well as pre norm)
+        x = self.norm1(x + self.attention(x))
+        x = self.norm2(x + self.mlp(x))
+
+        return x # (batch, embed_dim, token)
 
 
 class MultiheadAttention(nn.Module):
@@ -69,3 +90,19 @@ class MultiheadAttention(nn.Module):
 
         return out
     
+
+class MLP(nn.Module):
+    def __init__(self, dim, mlp_ratio):
+        super().__init__()
+
+        self.relu = relu
+        self.linear1 = Linear(dim, dim * mlp_ratio, bias=True)
+        self.linear2 = Linear(dim * mlp_ratio, dim, bias=True)
+
+    def forward(self, x):
+
+        x = self.linear1(x)
+        x = self.relu(x)
+        x = self.linear2(x)
+
+        return x

@@ -5,7 +5,7 @@ https://cdn.openai.com/research-covers/language-unsupervised/language_understand
 
 import torch
 from torch import nn
-from _2017.multiheadattention import MultiheadAttention
+from _2017.transformer import MultiheadAttention
 from _2016.layernorm import LayerNorm
 from _2016.gelu import gelu
 from glu import MLP

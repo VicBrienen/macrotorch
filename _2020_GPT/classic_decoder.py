@@ -7,7 +7,7 @@ import torch
 from torch import nn
 from _2017_Transformer.multiheadattention import MultiheadAttention
 from _2016_LayerNorm.layernorm import LayerNorm
-from mlp import MLP
+from _2020_GPT.glu import MLP
 from _2016_LayerNorm.glu import gelu
 
 class DecoderBlock(nn.Module):
@@ -26,4 +26,4 @@ class DecoderBlock(nn.Module):
         x = self.norm1(x + self.attention(x))
         x = self.norm2(x + self.mlp(x))
 
-        return x # (batch, token, embed_dim)
+        return x # (batch, embed_dim, token)

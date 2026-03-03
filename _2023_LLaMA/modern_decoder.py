@@ -8,7 +8,7 @@ from torch import nn
 from _2016_LayerNorm.glu import silu
 from _2017_Transformer.multiheadattention import MultiheadAttention
 from _2019_RMSNorm.rmsnorm import RMSNorm
-from _2020_GPT.mlp import MLP
+from _2020_GPT.glu import MLP
 
 
 class DecoderBlock(nn.Module):

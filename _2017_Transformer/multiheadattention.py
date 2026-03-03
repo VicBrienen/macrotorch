@@ -5,7 +5,7 @@ https://arxiv.org/pdf/1706.03762
 
 import torch
 from torch import nn
-from _2015_Kaiming_Initialization.linear import Linear
+from _2015_Residual_Connection.kaiming import Linear
 
 
 class MultiheadAttention(nn.Module):

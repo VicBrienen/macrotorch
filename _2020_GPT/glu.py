@@ -9,7 +9,7 @@ from _2015_Residual_Connection.kaiming import Linear
 from _2016_LayerNorm.glu import glu
 
 class MLP(nn.Module):
-    def __init__(self, dim, bias=False, activation=None, mlp_ratio=4, use_glu=False):
+    def __init__(self, dim, bias=False, activation=None, mlp_ratio=4, use_glu=True):
         super().__init__()
 
         self.activation = activation

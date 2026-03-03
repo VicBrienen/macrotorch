@@ -5,10 +5,10 @@ https://arxiv.org/pdf/2002.05202
 
 import torch
 from torch import nn
-from _2015_Residual_Connection.kaiming import Linear
-from _2016_LayerNorm.glu import glu
+from _2015.kaiming import Linear
+from _2016.glu import glu
 
-class MLP(nn.Module):
+class GLU(nn.Module):
     def __init__(self, dim, bias=False, activation=None, mlp_ratio=4, use_glu=True):
         super().__init__()
 

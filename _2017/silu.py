@@ -3,7 +3,7 @@ Sigmoid-Weighted Linear Units for Neural Network Function Approximation in Reinf
 https://arxiv.org/pdf/1702.03118
 """
 
-from _1986_Backpropagation.sigmoid import sigmoid
+from _1986.sigmoid import sigmoid
 
 def silu(x):
     return x * sigmoid(x)

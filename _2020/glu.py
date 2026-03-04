@@ -10,11 +10,10 @@ from _2016.glu import glu
 
 
 class GLU(nn.Module):
-    def __init__(self, dim, bias=False, activation=None, mlp_ratio=4, use_glu=True):
+    def __init__(self, dim, bias=False, activation=None):
         super().__init__()
 
         self.activation = activation
-        self.use_glu = use_glu
 
         mlp_ratio = 4 * 2 / 3 # ensure same parameter count as regular MLP
         hidden_dim = int(dim * mlp_ratio)

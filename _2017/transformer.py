@@ -26,7 +26,7 @@ class TransformerBlock(nn.Module):
         x = self.norm1(x + self.attention(x))
         x = self.norm2(x + self.mlp(x))
 
-        return x # (batch, embed_dim, token)
+        return x # (batch, token, embed_dim)
 
 
 class MultiheadAttention(nn.Module):

@@ -9,7 +9,7 @@ import torch
 from torch import nn
 from _2015.kaiming import Linear
 
-class MultiheadAttention(nn.Module):
+class MultiQueryAttention(nn.Module):
     def __init__(self, embed_dim, heads, groups=1, causal=False):
         super().__init__()
 

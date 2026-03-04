@@ -7,7 +7,7 @@ import torch
 from torch import nn
 from _2015.kaiming import Linear
 
-class MultiheadAttention(nn.Module):
+class GroupedQueryAttention(nn.Module):
     def __init__(self, embed_dim, heads, groups, causal=False):
         super().__init__()
 

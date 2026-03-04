@@ -1,14 +1,16 @@
 """
-GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints
-https://arxiv.org/pdf/2305.13245
+Fast Transformer Decoding: One Write-Head is All You Need
+https://arxiv.org/pdf/1911.02150
 """
+
+# code is identical to grouped query attention but groups is set to 1
 
 import torch
 from torch import nn
 from _2015.kaiming import Linear
 
 class MultiheadAttention(nn.Module):
-    def __init__(self, embed_dim, heads, groups, causal=False):
+    def __init__(self, embed_dim, heads, groups=1, causal=False):
         super().__init__()
 
         # convention of dividing the embed_dim by number of heads to obtain head_dim for computational purposes

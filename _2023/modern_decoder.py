@@ -5,10 +5,10 @@ https://arxiv.org/pdf/2302.13971
 
 import torch
 from torch import nn
-from _2016_LayerNorm.glu import silu
-from _2017_Transformer.multiheadattention import MultiheadAttention
-from _2019_RMSNorm.rmsnorm import RMSNorm
-from _2020_GPT.glu import MLP
+from _2016.glu import silu
+from _2017.transformer import MultiheadAttention
+from _2019.rmsnorm import RMSNorm
+from _2020.glu import MLP
 
 
 class DecoderBlock(nn.Module):

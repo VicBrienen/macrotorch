@@ -30,7 +30,7 @@ class TransformerBlock(nn.Module):
 
 
 class MultiheadAttention(nn.Module):
-    def __init__(self, embed_dim, heads, causal=False):
+    def __init__(self, embed_dim, heads, rope=None, causal=False):
         super().__init__()
 
         # convention of dividing the embed_dim by number of heads to obtain head_dim for computational purposes
@@ -44,6 +44,8 @@ class MultiheadAttention(nn.Module):
         self.out_proj = Linear(embed_dim, embed_dim)
 
         self.causal = causal
+
+        self.rope = rope
 
     def forward(self, x): # (batch, token, embed_dim)
         batch, token, embed_dim = x.shape # extract input shape
@@ -62,6 +64,10 @@ class MultiheadAttention(nn.Module):
         q = q.permute(0, 2, 1, 3)
         k = k.permute(0, 2, 1, 3)
         v = v.permute(0, 2, 1, 3)
+
+        # apply rotary position embeddings to queries and keys
+        if self.rope is not None:
+            q, k = self.rope(q, k)
 
         # for each head, perform self attention between queries and keys
         attention_scores = q @ k.permute(0, 1, 3, 2) # (batch, heads, token, token)

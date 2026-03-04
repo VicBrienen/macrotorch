@@ -10,7 +10,7 @@ from torch import nn
 from _2015.kaiming import Linear
 
 class MultiQueryAttention(nn.Module):
-    def __init__(self, embed_dim, heads, groups=1, causal=False):
+    def __init__(self, embed_dim, heads, groups=1, rope=None, causal=False):
         super().__init__()
 
         # convention of dividing the embed_dim by number of heads to obtain head_dim for computational purposes
@@ -31,6 +31,8 @@ class MultiQueryAttention(nn.Module):
         self.out_proj = Linear(embed_dim, embed_dim)
 
         self.causal = causal
+
+        self.rope = rope
 
     def forward(self, x): # (batch, token, embed_dim)
         batch, token, embed_dim = x.shape # extract input shape
@@ -53,6 +55,10 @@ class MultiQueryAttention(nn.Module):
         # reorder k and v dimensions (batch, groups, token, head_dim)
         k = k.permute(0, 2, 1, 3)
         v = v.permute(0, 2, 1, 3)
+
+        # apply rotary position embeddings to queries and keys
+        if self.rope is not None:
+            q, k = self.rope(q, k)
 
         # repeat k and v to match query heads (basically expanding the tensor)
         repeats = self.heads // self.groups
